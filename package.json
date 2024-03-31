@@ -1,0 +1,31 @@
+{
+  "name": "tottus-api",
+  "version": "1.0.18",
+  "description": "Tottus - Api products",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "dev": "nodemon -L --watch ./src ./src/main/server.ts"
+  },
+  "keywords": [],
+  "author": "https://github.com/Ox18",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.11.3",
+    "grunt": "^1.6.1",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "express": "^4.19.2",
+    "module-alias": "^2.2.2"
+  },
+  "_moduleAliases": {
+    "@": "dist"
+  }
+}
