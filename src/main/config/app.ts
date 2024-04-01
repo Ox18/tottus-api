@@ -1,19 +1,17 @@
 import { Express } from "express";
 import express from "express";
 
-import TestController from "../../presentation/controllers/test.controller";
+import readControllers from "./controllers";
+import router from "./router";
 
 export const setupApp = async (): Promise<Express> => {
   const app = express();
 
   app.use(express.json());
 
-  // app[TestController.method](TestController.route, TestController.handle);
+  const controllers = await readControllers();
 
-  // create router
-  app[TestController.method](TestController.route, TestController.handle);
-
-  // app[TestController.method](TestController.route, TestController.handle);
+  router(app, controllers);
 
   return app;
 };
