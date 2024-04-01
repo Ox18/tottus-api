@@ -7,6 +7,11 @@ import router from "./router";
 export const setupApp = async (): Promise<Express> => {
   const app = express();
 
+  app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+  });
+
   app.use(express.json());
 
   const controllers = await readControllers();

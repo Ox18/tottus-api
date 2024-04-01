@@ -1,32 +1,24 @@
+import { BarcodeBazaarvoiceRepository } from "../../infra/scrapping/bazaarvoice/barcode-bazaarvoice-repository";
+import { ProductTottusRepository } from "../../infra/scrapping/tottus/product-tottus-repository";
 import { HTTP_METHOD } from "../enums/http-method-enum";
 import { Handler } from "../protocols/handler";
-import axios from "axios";
-import cheerio from "cheerio";
+import { GetProductRequest } from "../protocols/request";
 
-type Test = {
-  productId: string;
-};
+const productTottusRepository = new ProductTottusRepository();
+const barcodeBazaarvoiceRepository = new BarcodeBazaarvoiceRepository();
 
-const api = "https://tottus.falabella.com.pe/tottus-pe/product/";
+const handle: Handler<GetProductRequest> = async (request) => {
+  const productId = request.query.productId;
 
-const handle: Handler<Test> = async (request, response) => {
-  try {
-    const productId = Number(request.query.productId);
+  const responseTottus = await productTottusRepository.getByProductId(
+    productId
+  );
 
-    const responseTottus = await axios.get(`${api}${productId}`);
+  const barcode = await barcodeBazaarvoiceRepository.getByProductId(productId);
 
-    console.log(responseTottus.data);
+  console.log({ barcode });
 
-    const html = responseTottus.data; // Obtener el HTML de la respuesta
-    const $ = cheerio.load(html); // Cargar el HTML en Cheerio
-    const scriptContent = $("script#__NEXT_DATA__").html();
-
-    response.json(
-      JSON.parse(JSON.parse(JSON.stringify(scriptContent, null, 2)))
-    );
-  } catch (ex) {
-    response.status(500).json({ message: ex.message });
-  }
+  return responseTottus;
 };
 
 export default {
